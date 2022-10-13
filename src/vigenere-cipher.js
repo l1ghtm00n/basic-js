@@ -20,21 +20,30 @@ const { NotImplementedError } = require('../extensions/index.js');
  * 
  */
 class VigenereCipheringMachine {
+  constructor (value=true) {
+    this.value = value;
+  }
   encrypt() {
     if (arguments[0]!==undefined && arguments[1]!==undefined) {
       let message = arguments[0].toUpperCase();
       let key = arguments[1].toUpperCase();
-      let a = Math.floor(message.length/key.length);
-      let b = message.length%key.length;
-      let fullKey = key.repeat(a)+key.slice(0,b);
+      let rm ='';
+      if(this.value===false) {
+        rm = message.split("").reverse().join("");
+        message = rm;
+      }
       let alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-      // console.dir(fullKey.charCodeAt(0));
       let resultCode=0;
       let result = [];
+      let j=0;
       for (let i=0; i<message.length;i++) {
-        resultCode = ((message.charCodeAt(i) + fullKey.charCodeAt(i)));
-        result.push(String.fromCharCode(resultCode));
-        console.dir(resultCode);
+        if (alphabet.indexOf(message[i]) !== -1) {
+          resultCode = ((alphabet.indexOf(message[i]) + alphabet.indexOf(key[j%key.length]))%alphabet.length);
+          result.push(alphabet[resultCode]);
+          j++;
+        } else {
+          result.push(message[i]);
+        }        
       }
       return result.join('');
     } else {
@@ -44,6 +53,27 @@ class VigenereCipheringMachine {
 
   decrypt() {
     if (arguments[0]!==undefined && arguments[1]!==undefined) {
+      let message = arguments[0].toUpperCase();
+      let key = arguments[1].toUpperCase();
+      let rm ='';
+      if(this.value===false) {
+        rm = message.split("").reverse().join("");
+        message = rm;
+      }
+      let alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+      let resultCode=0;
+      let result = [];
+      let j=0;
+      for (let i=0; i<message.length;i++) {
+        if (alphabet.indexOf(message[i]) !== -1) {
+          resultCode = ((alphabet.indexOf(message[i]) - alphabet.indexOf(key[j%key.length]) + alphabet.length)%alphabet.length);
+          result.push(alphabet[resultCode]);
+          j++;
+        } else {
+          result.push(message[i]);
+        }        
+      }
+      return result.join('');
     } else {
       throw new Error('Incorrect arguments!');
     }
