@@ -14,7 +14,7 @@ const { NotImplementedError } = require('../extensions/index.js');
 
 function isDate(d) {
   try {
-    return d instanceof Date && !isNaN(d.valueOf()) && d;    
+    return d instanceof Date && !isNaN(d.valueOf());    
   } catch (error) {
     throw  new Error('Invalid date!');  
   }  
@@ -23,7 +23,6 @@ function isDate(d) {
 function getSeason(date) {
   let seasons = {'winter' : [11,0,1] ,'spring' : [2,3,4], 'summer' : [5,6,7],'autumn' : [8,9,10]};
   if (arguments.length>0) {
-      console.dir('getUTCMonth' in date);
       if (isDate(date)) {
         let month = date.getMonth();
           for (let key in seasons) {
