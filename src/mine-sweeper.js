@@ -32,32 +32,42 @@ function minesweeper(matrix) {
     for(let j=0; j< y; j++) {
       if (matrix[i][j]) {
         if (j+1<y) {
-          console.dir(`1) arr[${i},${j}] = ${i*x+j+1}`);
-          arr[i*x+j+1] += 1;
+          arr[j+x*i+y] += 1;
+          if (i+1<x) {
+            arr[j+x*i+y+1] += 1;            
+          }
+          if (i-1>-1) {
+            arr[j+x*i+y-1] += 1;            
+          }
         }
         if (j-1>-1) {
-          console.dir(`2) arr[${i},${j}]  = ${i*x+j-1}`);
-          arr[i*x+j-1] += 1;
+          arr[j+x*i-y] += 1;  
+          if (i+1<x) {
+            arr[j+x*i-y+1] += 1;            
+          }
+          if (i-1>-1) {
+            arr[j+x*i-y-1] += 1;            
+          } 
         }
         if (i+1<x) {
-          console.dir(`3) arr[${i},${j}]  = ${x+j*y+1}`);
-          arr[x*i+j*y+j] += 1;
-          if (x*i+j*y+x<x*y) {
-            arr[x*i+j*y+j+1] += 1;
-          }
+          arr[i+j*y+1] += 1;
         }
         if (i-1>-1) {
-          console.dir(`4) arr[${i},${j}]  = ${j*y-1}`);
-          arr[j*y-1] += 1;
-          if (j*y-x>-1) {
-            arr[j*y-x] += 1;
-          }
+          arr[i+j*y-1] += 1;
         }    
-
       }
     }
   }
-  console.dir(arr);
+  let res = [];
+  let tArr;
+  for(let i=0; i< x; i++) {
+    tArr = [];
+    for(let j=0; j< y; j++) {
+      tArr.push(arr[i*y+j]);    
+    }
+    res.push(tArr);
+  }
+  return res;
 }
 
 module.exports = {
